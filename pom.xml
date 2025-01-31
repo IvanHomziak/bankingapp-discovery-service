@@ -8,24 +8,14 @@
         <version>3.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.ihomziak.bankingapp.discovery.service</groupId>
     <artifactId>bankingapp-discovery-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>BankingAppDiscoveryService</name>
+
+    <name>eureka-server</name>
     <description>Eureka Discovery Service</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -57,6 +47,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>bankingapp-discovery-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8010:8010"
+    networks:
+      - bankingapp-network  # Added shared network
+    environment:
+      - SPRING_APPLICATION_NAME=discovery-service
+      - SERVER_PORT=8010
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+
+networks:
+  bankingapp-network:  # 🔹 Global network created automatically
+    driver: bridge
