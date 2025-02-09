@@ -11,18 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout основного репозиторію
-      - name: Checkout bankingapp-client-account-ms
+      - name: Checkout bankingapp-discovery-service
         uses: actions/checkout@v4
 
-      # 2️⃣ Checkout загального bankingapp-common
-      - name: Checkout bankingapp-common
-        uses: actions/checkout@v4
-        with:
-          repository: IvanHomziak/bankingapp-common
-          path: bankingapp-common
-
-      # 3️⃣ Встановлення JDK 17 + кешування Maven
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
@@ -30,29 +21,12 @@ jobs:
           java-version: 17
           cache: maven
 
-      # 4️⃣ Встановлення bankingapp-common
-      - name: Install bankingapp-common
-        run: |
-          cd bankingapp-common
-          mvn clean install -DskipTests
-
-      # 5️⃣ Запуск тестів
-      - name: Run Unit Tests
-        run: mvn -B test --file pom.xml
-
-      # 6️⃣ Перевірка коду перед збіркою (опціонально)
-      - name: Verify project (Optional)
-        run: mvn verify
-
-      # 7️⃣ Збірка JAR
-      - name: Build bankingapp-client-account-ms Application
+      - name: Build bankingapp-discovery-service Application
         run: mvn clean package -DskipTests
 
-      # 8️⃣ Визначення тегу образу (динамічний)
       - name: Define Image Tag
         run: echo "IMAGE_TAG=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
 
-      # 9️⃣ Логін у Docker Hub (перед створенням образу)
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -67,8 +41,8 @@ jobs:
           dockerfile: Dockerfile
           push: false
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-client-account-ms:${{ env.IMAGE_TAG }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-client-account-ms:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-discovery-service:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-discovery-service:latest
 
       # 🔟 Пуш Docker-образу у Docker Hub
       - name: Push image to Docker Hub
@@ -78,5 +52,5 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-client-account-ms:${{ env.IMAGE_TAG }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-client-account-ms:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-discovery-service:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/bankingapp-discovery-service:latest
